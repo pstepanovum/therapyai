@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFirestore, doc, updateDoc, DocumentData } from "firebase/firestore"; // Added DocumentData import
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { getFirestore, doc, updateDoc, DocumentData } from "firebase/firestore";
 
-// Define a session interface
-interface SessionUpdate {
+// Define the full session document structure
+interface SessionDocument {
   sessionDate?: Date;
   therapistId?: string;
   patientId?: string;
@@ -18,6 +19,9 @@ interface SessionUpdate {
   journalingResponse?: string;
   status?: string;
 }
+
+// Use Partial for updates
+type SessionUpdate = Partial<SessionDocument>;
 
 // Interface for request body
 interface UpdateSessionRequest {
@@ -40,16 +44,21 @@ interface UpdateSessionRequest {
 // Initialize Firestore
 const db = getFirestore();
 
-export async function PUT(req: NextRequest, { params }: { params: { sessionId: string } }) {
+// Define the params type for the dynamic route
+interface RouteParams {
+  params: {
+    sessionId: string;
+  };
+}
+
+export async function PUT(req: NextRequest, { params }: RouteParams) {
   try {
-    // Extract sessionId from the URL params
     const { sessionId } = params;
 
     if (!sessionId) {
       return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
     }
 
-    // Parse the request body for fields to update
     const requestData: UpdateSessionRequest = await req.json();
     const {
       sessionDate,
@@ -68,7 +77,6 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
       status,
     } = requestData;
 
-    // Create an object with only the provided fields to update
     const updatedSession: SessionUpdate = {};
 
     if (sessionDate) {
@@ -89,16 +97,12 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
     if (journalingResponse !== undefined) updatedSession.journalingResponse = journalingResponse;
     if (status) updatedSession.status = status;
 
-    // Check if there's anything to update
     if (Object.keys(updatedSession).length === 0) {
       return NextResponse.json({ error: "No fields provided to update" }, { status: 400 });
     }
 
-    // Reference to the session document in Firestore
     const sessionRef = doc(db, "sessions", sessionId);
-
-    // Update the session document
-    await updateDoc(sessionRef, updatedSession as DocumentData);
+    await updateDoc(sessionRef, updatedSession);
 
     console.log(`Session ${sessionId} updated successfully:`, updatedSession);
 
