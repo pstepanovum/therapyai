@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { getFirestore, doc, updateDoc, DocumentData } from "firebase/firestore";
+import { initializeFirebaseAdmin } from "@/app/utils/firebase/admin";
+
+// Initialize Firebase Admin SDK
+const { db } = initializeFirebaseAdmin();
 
 // Define the full session document structure
 interface SessionDocument {
@@ -41,17 +43,7 @@ interface UpdateSessionRequest {
   status?: string;
 }
 
-// Initialize Firestore
-const db = getFirestore();
-
-// Define the params type for the dynamic route
-interface RouteParams {
-  params: {
-    sessionId: string;
-  };
-}
-
-export async function PUT(req: NextRequest, { params }: RouteParams) {
+export async function PUT(req: NextRequest, { params }: { params: { sessionId: string } }) {
   try {
     const { sessionId } = params;
 
@@ -101,8 +93,8 @@ export async function PUT(req: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: "No fields provided to update" }, { status: 400 });
     }
 
-    const sessionRef = doc(db, "sessions", sessionId);
-    await updateDoc(sessionRef, updatedSession);
+    const sessionRef = db.doc(`sessions/${sessionId}`); // Use db.doc() instead of standalone doc()
+    await sessionRef.set(updatedSession, { merge: true }); // Use set with merge option
 
     console.log(`Session ${sessionId} updated successfully:`, updatedSession);
 

@@ -33,7 +33,7 @@
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "firebase": "^11.3.1",
-    "firebase-admin": "^13.1.0",
+    "firebase-admin": "^13.2.0",
     "framer-motion": "^12.4.7",
     "livekit-client": "^2.9.3",
     "livekit-server-sdk": "^2.10.1",
