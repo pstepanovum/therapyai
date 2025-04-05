@@ -40,6 +40,7 @@ export async function POST(request: Request) {
             success: true,
             data: response.choices[0]?.message.content,
         });
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
         // Handle any errors
         return NextResponse.json({

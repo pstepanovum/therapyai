@@ -140,6 +140,7 @@ const LandingPage = () => {
   };
 
   // Huge Update: Added API Call
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const handleApiCall = async () => {
     try {
       const currentUser = auth.currentUser;

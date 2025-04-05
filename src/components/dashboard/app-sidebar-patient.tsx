@@ -44,7 +44,7 @@ import {
 interface NavItem {
   title: string;
   url: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>; // Fixed: Use proper type for icon
   badge?: string; // Optional badge property
   className?: string; // Optional for settings items like Logout
 }
@@ -149,6 +149,7 @@ export function PatientSidebar() {
   }, [])
 
   // Fetch upcoming sessions and count
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const fetchUpcomingSessions = async (uid: string, db: any) => {
     try {
       const now = new Date()
@@ -164,12 +165,13 @@ export function PatientSidebar() {
       if (!querySnapshot.empty) {
         const docSnap = querySnapshot.docs[0]
         const data = docSnap.data()
-        let session: Session = {
+        // Fixed: Use const instead of let since session is never reassigned
+        const session: Session = {
           id: docSnap.id,
           sessionDate: data.sessionDate.toDate(),
           therapistId: data.therapistId,
           summary: data.summary,
-          shortSummary: data.shortSummar || "",
+          shortSummary: data.shortSummary || "", // Fixed typo in property name
           keyPoints: data.keyPoints || [],
           insights: data.insights || [],
           mood: data.mood || "",
@@ -297,6 +299,7 @@ export function PatientSidebar() {
                   >
                     <Link href={item.url} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
+                        {/* Fixed: Use proper type for icon component */}
                         <item.icon className="h-5 w-5" />
                         <span className="font-medium">{item.title}</span>
                       </div>
@@ -354,11 +357,13 @@ export function PatientSidebar() {
                         onClick={handleLogout}
                         className="flex items-center gap-3 w-full"
                       >
+                        {/* Fixed: Use proper type for icon component */}
                         <item.icon className="h-5 w-5" />
                         <span className="font-medium">{item.title}</span>
                       </button>
                     ) : (
                       <Link href={item.url} className="flex items-center gap-3">
+                        {/* Fixed: Use proper type for icon component */}
                         <item.icon className="h-5 w-5" />
                         <span className="font-medium">{item.title}</span>
                       </Link>

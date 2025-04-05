@@ -137,6 +137,7 @@ function VideoConferenceComponent(props: {
           body: JSON.stringify({ s3Key: 'TherapyRecording.mp4', userId: currentUser?.uid, therapistId, sessionDate: new Date(), sessionId }),
         });
   
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         const transcriptionText = (await transcriptionResponse).text;
         
         // const summaryResponse = fetch('/api/getSummary', {

@@ -1,5 +1,41 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getFirestore, doc, updateDoc } from "firebase/firestore"; // Import Firestore functions
+import { getFirestore, doc, updateDoc, DocumentData } from "firebase/firestore"; // Added DocumentData import
+
+// Define a session interface
+interface SessionUpdate {
+  sessionDate?: Date;
+  therapistId?: string;
+  patientId?: string;
+  summary?: string;
+  keyPoints?: string[];
+  insights?: string[];
+  mood?: string;
+  progress?: string;
+  goals?: string[];
+  warnings?: string[];
+  transcript?: string;
+  journalingPrompt?: string;
+  journalingResponse?: string;
+  status?: string;
+}
+
+// Interface for request body
+interface UpdateSessionRequest {
+  sessionDate?: string;
+  therapistId?: string;
+  patientId?: string;
+  summary?: string;
+  keyPoints?: string[];
+  insights?: string[];
+  mood?: string;
+  progress?: string;
+  goals?: string[];
+  warnings?: string[];
+  transcript?: string;
+  journalingPrompt?: string;
+  journalingResponse?: string;
+  status?: string;
+}
 
 // Initialize Firestore
 const db = getFirestore();
@@ -14,6 +50,7 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
     }
 
     // Parse the request body for fields to update
+    const requestData: UpdateSessionRequest = await req.json();
     const {
       sessionDate,
       therapistId,
@@ -29,10 +66,10 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
       journalingPrompt,
       journalingResponse,
       status,
-    } = await req.json();
+    } = requestData;
 
     // Create an object with only the provided fields to update
-    const updatedSession: { [key: string]: any } = {};
+    const updatedSession: SessionUpdate = {};
 
     if (sessionDate) {
       const date = new Date(sessionDate);
@@ -52,7 +89,7 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
     if (journalingResponse !== undefined) updatedSession.journalingResponse = journalingResponse;
     if (status) updatedSession.status = status;
 
-    // Check if there’s anything to update
+    // Check if there's anything to update
     if (Object.keys(updatedSession).length === 0) {
       return NextResponse.json({ error: "No fields provided to update" }, { status: 400 });
     }
@@ -61,7 +98,7 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
     const sessionRef = doc(db, "sessions", sessionId);
 
     // Update the session document
-    await updateDoc(sessionRef, updatedSession);
+    await updateDoc(sessionRef, updatedSession as DocumentData);
 
     console.log(`Session ${sessionId} updated successfully:`, updatedSession);
 

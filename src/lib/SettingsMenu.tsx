@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import * as React from 'react';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Track } from 'livekit-client';
 import { useMaybeLayoutContext, MediaDeviceMenu, TrackToggle, useRoomContext, useIsRecording } from '@livekit/components-react';
 import { useKrispNoiseFilter } from '@livekit/components-react/krisp';
@@ -10,6 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2 } from 'lucide-react';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface SettingsMenuProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function SettingsMenu(props: SettingsMenuProps) {

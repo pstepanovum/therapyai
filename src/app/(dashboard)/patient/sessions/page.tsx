@@ -17,7 +17,6 @@ import {
   Clock,
   Target,
   ChevronRight,
-  PenLine
 } from "lucide-react"
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore"
 import { auth } from "@/app/utils/firebase/config"
@@ -62,7 +61,7 @@ export default function SessionsPage() {
         // Filter sessions where the patientId equals the logged-in user's uid
         const q = query(sessionsRef, where("patientId", "==", currentUser.uid))
         const querySnapshot = await getDocs(q)
-        let fetchedSessions: Session[] = querySnapshot.docs.map(doc => {
+        const fetchedSessions: Session[] = querySnapshot.docs.map(doc => {
           const data = doc.data()
           return {
             id: doc.id,

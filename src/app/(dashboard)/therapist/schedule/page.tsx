@@ -26,7 +26,8 @@ import {
   where, 
   getDocs,
   doc,
-  getDoc
+  getDoc,
+  Firestore
 } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -61,7 +62,7 @@ export default function SchedulePage() {
     return () => unsubscribe()
   }, [])
 
-  const fetchSessions = async (therapistId: string, db: any) => {
+  const fetchSessions = async (therapistId: string, db: Firestore) => {
     try {
       const sessionsRef = collection(db, "sessions")
       const q = query(

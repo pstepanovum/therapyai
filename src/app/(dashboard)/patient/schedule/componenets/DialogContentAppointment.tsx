@@ -9,15 +9,15 @@ import { CalendarIcon } from 'lucide-react';
 import { format } from 'date-fns';
 
 interface BookingDialogProps {
-  selectedDate: Date | null;
-  onDateSelect: (date: Date | null) => void;
+  selectedDate: Date | undefined;
+  onDateSelect: (date: Date | undefined) => void;
   selectedHour: string;
   onHourSelect: (hour: string) => void;
   selectedMinute: string;
   onMinuteSelect: (minute: string) => void;
   selectedTherapist: string;
   onTherapistSelect: (therapistId: string) => void;
-  therapists: { id: string; last_name: string }[];
+  therapists: { id: string; first_name?: string; last_name: string }[];
   onBookAppointment: () => void;
 }
 
@@ -62,8 +62,8 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
             <PopoverContent className="w-auto p-0 bg-white border-[#146C94]/20 rounded-lg shadow-lg">
               <Calendar
                 mode="single"
-                selected={selectedDate || undefined}
-                onSelect={(date) => onDateSelect(date ?? null)}
+                selected={selectedDate}
+                onSelect={onDateSelect}
                 initialFocus
                 className="bg-[#146C94]/5 p-3 rounded-lg"
               />

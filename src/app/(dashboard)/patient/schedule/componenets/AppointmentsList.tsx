@@ -3,10 +3,42 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Calendar, Clock } from 'lucide-react';
+import { Calendar, Clock, LucideIcon } from 'lucide-react';
+import { Session as ImportedSession } from './types';
 
-const AppointmentCard = ({ session, onViewDetails }) => {
-  const getStatusBadge = (status) => {
+// Define types for session and status
+type SessionStatus = 'scheduled' | 'completed' | string;
+
+// Local session interface that matches the imported one
+interface Session {
+  id: string | number;
+  therapist: string;
+  sessionDate: Date;
+  status: SessionStatus;
+  icon: LucideIcon;
+  // Add any other properties needed to make it compatible with imported Session
+  therapistId?: string;
+  summary?: string;
+  detailedNotes?: string;
+  keyPoints?: string[];
+  insights?: string[];
+  mood?: string;
+  progress?: string;
+  goals?: string[];
+  warnings?: string[];
+  transcript?: string;
+  journalingPrompt?: string;
+  journalingResponse?: string;
+  patientId?: string;
+}
+
+interface AppointmentCardProps {
+  session: Session;
+  onViewDetails: (id: string | number) => void;
+}
+
+const AppointmentCard: React.FC<AppointmentCardProps> = ({ session, onViewDetails }) => {
+  const getStatusBadge = (status: SessionStatus): string => {
     switch (status) {
       case "scheduled": return "bg-[#146C94]/10 text-[#146C94]"
       case "completed": return "bg-green-100 text-green-800"
@@ -49,18 +81,28 @@ const AppointmentCard = ({ session, onViewDetails }) => {
   );
 };
 
-const EmptyState = () => (
+const EmptyState: React.FC = () => (
   <div className="text-center py-10 text-gray-500">
     <Calendar className="mx-auto h-12 w-12 opacity-50 mb-4" />
     <p>No appointments scheduled yet.</p>
   </div>
 );
 
-const AppointmentsList = ({ 
+interface AppointmentsListProps {
+  sessions?: ImportedSession[] | Session[];
+  filter?: string;
+  onFilterChange: (value: string) => void;
+  onViewDetails?: (id: string | number) => void;
+  viewMode?: "calendar" | "list";
+}
+
+const AppointmentsList: React.FC<AppointmentsListProps> = ({ 
   sessions = [], 
   filter = 'all', 
   onFilterChange,
-  onViewDetails = (id) => console.log(`View details for session ${id}`)
+  onViewDetails = (id) => console.log(`View details for session ${id}`),
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  viewMode
 }) => {
   return (
     <Card className="lg:col-span-3 bg-white shadow-sm rounded-xl border-[#146C94]/10">
@@ -86,7 +128,7 @@ const AppointmentsList = ({
               {sessions.map((session) => (
                 <AppointmentCard 
                   key={session.id} 
-                  session={session} 
+                  session={session as Session} 
                   onViewDetails={onViewDetails}
                 />
               ))}

@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore"
+import { getFirestore, collection, query, where, getDocs, doc, getDoc, Firestore } from "firebase/firestore"
 import { getAuth, onAuthStateChanged } from "firebase/auth"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
@@ -62,8 +62,8 @@ export default function PatientDashboard() {
   const [loading, setLoading] = useState(true)
   const router = useRouter()
 
-  // Function to fetch therapist name
-  const getTherapistName = async (therapistId: string, db: any) => {
+  // Function to fetch therapist name with proper Firestore type
+  const getTherapistName = async (therapistId: string, db: Firestore): Promise<string> => {
     const therapistRef = doc(db, "users", therapistId)
     const therapistSnap = await getDoc(therapistRef)
     return therapistSnap.exists() ? `Dr. ${therapistSnap.data().last_name}` : "Unknown Therapist"
@@ -148,7 +148,7 @@ export default function PatientDashboard() {
           {greeting}, {userName}
         </h1>
         <p className="text-gray-600 mt-2">
-          We're here to support your journey to better mental health
+          We&apos;re here to support your journey to better mental health
         </p>
       </div>
 
@@ -191,7 +191,6 @@ export default function PatientDashboard() {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
         <Card>
-        {/* Replace the CardHeader section with this updated version */}
         <CardHeader>
           <CardTitle className="text-lg font-semibold flex items-center justify-between gap-2">
             <div className="flex flex-row items-center gap-2">
@@ -262,7 +261,7 @@ export default function PatientDashboard() {
       <Card className="bg-[#146C94]/5 border-none">
         <CardContent className="pt-6">
           <blockquote className="space-y-2">
-            <p className="text-lg text-[#146C94]">"{quote.text}"</p>
+            <p className="text-lg text-[#146C94]">&quot;{quote.text}&quot;</p>
             <footer className="text-sm text-[#146C94]/70">
               - {quote.author}
             </footer>

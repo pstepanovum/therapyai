@@ -20,7 +20,6 @@ import {
   Send,
 } from "lucide-react"
 import { getFirestore, doc, getDoc } from "firebase/firestore"
-import { auth } from "@/app/utils/firebase/config"
 
 // Define a TypeScript interface for our session document
 interface Session {
@@ -71,7 +70,7 @@ export default function SessionDetailsPage() {
         if (sessionSnap.exists()) {
           const data = sessionSnap.data()
           // Build our session object (assume sessionDate is stored as a Firestore Timestamp)
-          let fetchedSession: Session = {
+          const fetchedSession: Session = {
             id: sessionSnap.id,
             sessionDate: data.sessionDate.toDate(),
             therapist: data.therapist, // temporary value
@@ -299,7 +298,7 @@ export default function SessionDetailsPage() {
                 <div className="text-center py-4">
                   <Bot className="h-8 w-8 text-[#146C94]/40 mx-auto mb-2" />
                   <p className="text-gray-500 text-sm">
-                    Ask me anything about this session's insights and recommendations.
+                    Ask me anything about this session&apos;s insights and recommendations.
                   </p>
                 </div>
               ) : (

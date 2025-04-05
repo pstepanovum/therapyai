@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { 
   getFirestore, 
   collection, 
@@ -342,7 +341,7 @@ export default function MessagePage({ userId, userType, onError }: MessagePagePr
           {selectedContact && (
             <div className="p-4 border-t border-[#F6F1F1] flex-shrink-0">
               <div className="flex items-center gap-3 bg-[#F6F1F1] rounded-full px-4 py-2">
-                <Input 
+                <input 
                   value={newMessage} 
                   onChange={(e) => setNewMessage(e.target.value)} 
                   placeholder="Type a message..."

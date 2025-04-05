@@ -15,7 +15,7 @@ import * as React from 'react';
 import { MediaDeviceMenu, TrackToggle, ParticipantPlaceholder } from '@livekit/components-react';
 import type { LocalUserChoices } from '@livekit/components-core';
 import { log } from '@livekit/components-core';
-import { useMediaDevices, usePersistentUserChoices } from '@livekit/components-react/hooks';
+import { usePersistentUserChoices } from '@livekit/components-react/hooks';
 import { ChevronDown } from 'lucide-react';
 
 export interface PreJoinProps
@@ -123,15 +123,15 @@ export function PreJoin({
     saveUsername(username);
   }, [username, saveUsername]);
 
-  const tracks = usePreviewTracks(
-    {
-      audio: audioEnabled ? { deviceId: initialUserChoices.audioDeviceId } : false,
-      video: videoEnabled
-        ? { deviceId: initialUserChoices.videoDeviceId, processor: videoProcessor }
-        : false,
-    },
-    onError,
-  );
+  // Create a memoized options object to fix the useEffect dependency warning
+  const trackOptions = React.useMemo(() => ({
+    audio: audioEnabled ? { deviceId: initialUserChoices.audioDeviceId } : false,
+    video: videoEnabled
+      ? { deviceId: initialUserChoices.videoDeviceId, processor: videoProcessor }
+      : false,
+  }), [audioEnabled, videoEnabled, initialUserChoices.audioDeviceId, initialUserChoices.videoDeviceId, videoProcessor]);
+
+  const tracks = usePreviewTracks(trackOptions, onError);
 
   const videoEl = React.useRef<HTMLVideoElement>(null);
   const videoTrack = React.useMemo(
@@ -198,14 +198,14 @@ export function PreJoin({
 
   return (
     <>
-      <div className="bg-white flex items-center justify-center py-2" {...htmlProps}>
+      <div className="bg-white flex items-center justify-center py-6" {...htmlProps}>
         <div className="container max-w-3xl mx-auto px-4 md:px-6 text-center">
           {/* Video Preview */}
-          <div className="mb-6">
+          <div className="mb-8">
             {videoTrack ? (
               <video
                 ref={videoEl}
-                className="w-full max-w-lg rounded-xl shadow-lg mx-auto"
+                className="w-full max-w-lg rounded-xl shadow-lg mx-auto object-cover aspect-video"
                 data-lk-facing-mode={facingMode}
               />
             ) : (
@@ -216,13 +216,13 @@ export function PreJoin({
           </div>
           
           {/* Controls */}
-          <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-6">
+          <div className="flex flex-col md:flex-row items-center justify-center gap-4 mb-8">
             <div className="flex items-center gap-2">
               <TrackToggle
                 initialState={audioEnabled}
                 source={Track.Source.Microphone}
                 onChange={(enabled) => setAudioEnabled(enabled)}
-                className="!bg-[#AFD3E2] !text-[#146C94] px-5 py-2 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
+                className="!bg-[#AFD3E2] !text-[#146C94] px-5 py-2.5 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 {micLabel}
               </TrackToggle>
@@ -231,9 +231,9 @@ export function PreJoin({
                 kind="audioinput"
                 tracks={{ audioinput: audioTrack }}
                 onActiveDeviceChange={(_, id) => setAudioDeviceId(id)}
-                className="!bg-[#AFD3E2] !text-[#146C94] px-2 py-2 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
+                className="!bg-[#AFD3E2] !text-[#146C94] px-2.5 py-2.5 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
               >
-                <ChevronDown />
+                <ChevronDown size={16} />
               </MediaDeviceMenu>
             </div>
             <div className="flex items-center gap-2">
@@ -241,7 +241,7 @@ export function PreJoin({
                 initialState={videoEnabled}
                 source={Track.Source.Camera}
                 onChange={(enabled) => setVideoEnabled(enabled)}
-                className="!bg-[#AFD3E2] !text-[#146C94] px-5 py-2 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
+                className="!bg-[#AFD3E2] !text-[#146C94] px-5 py-2.5 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
               >
                 {camLabel}
               </TrackToggle>
@@ -250,15 +250,15 @@ export function PreJoin({
                 kind="videoinput"
                 tracks={{ videoinput: videoTrack }}
                 onActiveDeviceChange={(_, id) => setVideoDeviceId(id)}
-                className="!bg-[#AFD3E2] !text-[#146C94] px-2 py-2 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
+                className="!bg-[#AFD3E2] !text-[#146C94] px-2.5 py-2.5 rounded-md text-sm font-medium hover:!bg-[#146C94] hover:!text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md"
               >
-                <ChevronDown />
+                <ChevronDown size={16} />
               </MediaDeviceMenu>
             </div>
           </div>
           
           {/* Form */}
-          <form className="space-y-2 max-w-md mx-auto" onSubmit={handleSubmit}>
+          <form className="space-y-4 max-w-md mx-auto" onSubmit={handleSubmit}>
             <input
               className="w-full px-6 py-4 rounded-xl bg-white border text-[#146C94] placeholder-[#146C94]/60 focus:outline-none focus:ring-2 transition-all duration-200 border-[#AFD3E2] focus:border-[#146C94] focus:ring-[#AFD3E2] shadow-sm"
               id="username"
@@ -271,7 +271,11 @@ export function PreJoin({
             />
             <button
               type="submit"
-              className="bg-[#AFD3E2] text-[#146C94] px-5 py-2 rounded-md text-sm font-medium hover:bg-[#146C94] hover:text-[#F6F1F1] transition-all duration-200 shadow-sm hover:shadow-md w-full"
+              className={`bg-[#AFD3E2] text-[#146C94] px-5 py-3 rounded-md text-sm font-medium transition-all duration-200 shadow-sm hover:shadow-md w-full ${
+                isValid 
+                  ? 'hover:bg-[#146C94] hover:text-[#F6F1F1]' 
+                  : 'opacity-70 cursor-not-allowed'
+              }`}
               disabled={!isValid}
             >
               {joinLabel}
@@ -280,10 +284,10 @@ export function PreJoin({
           
           {/* Debug */}
           {debug && (
-            <div className="mt-4 text-left max-w-md mx-auto">
+            <div className="mt-6 text-left max-w-md mx-auto p-4 bg-[#F6F1F1]/50 rounded-lg">
               <strong className="text-[#146C94]">User Choices:</strong>
-              <ul className="text-[#146C94]/70 text-sm mt-2">
-                <li>Username: {userChoices.username}</li>
+              <ul className="text-[#146C94]/70 text-sm mt-2 space-y-1">
+                <li>Username: {userChoices.username || 'Not set'}</li>
                 <li>Video Enabled: {String(userChoices.videoEnabled)}</li>
                 <li>Audio Enabled: {String(userChoices.audioEnabled)}</li>
                 <li>Video Device: {userChoices.videoDeviceId || 'None'}</li>
@@ -296,20 +300,49 @@ export function PreJoin({
   
       {/* Custom CSS to ensure dropdown consistency */}
       <style jsx>{`
+        .lk-device-menu {
+          z-index: 50;
+        }
         .lk-device-menu button {
           background-color: #AFD3E2 !important;
           color: #146C94 !important;
-          padding: 0.5rem 1.25rem !important;
+          padding: 0.625rem !important;
           border-radius: 0.375rem !important;
           font-size: 0.875rem !important;
           font-weight: 500 !important;
           box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
           transition: all 200ms ease-in-out !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
+          height: 40px !important;
+          width: 40px !important;
         }
         .lk-device-menu button:hover {
           background-color: #146C94 !important;
           color: #F6F1F1 !important;
           box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+        }
+        .lk-device-menu ul {
+          background-color: white !important;
+          border: 1px solid #AFD3E2 !important;
+          border-radius: 0.375rem !important;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+          margin-top: 4px !important;
+        }
+        .lk-device-menu li {
+          padding: 0.5rem 1rem !important;
+          color: #146C94 !important;
+        }
+        .lk-device-menu li:hover,
+        .lk-device-menu li:focus {
+          background-color: #F6F1F1 !important;
+        }
+        .lk-track-toggle {
+          height: 40px !important;
+          display: flex !important;
+          align-items: center !important;
+          justify-content: center !important;
         }
       `}</style>
     </>

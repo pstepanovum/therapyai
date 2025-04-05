@@ -4,7 +4,67 @@ import fs from "fs";
 import path from "path";
 import { OpenAI } from "openai";
 import * as admin from 'firebase-admin';
-import { initializeFirebaseAdmin } from "@/app/utils/firebase/admin";
+
+// Initialize Firebase Admin if not already initialized
+const getFirebaseAdmin = () => {
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert({
+        projectId: process.env.FIREBASE_PROJECT_ID,
+        clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
+      }),
+    });
+  }
+  return {
+    auth: admin.auth(),
+    db: admin.firestore(),
+  };
+};
+
+// Define interfaces for request and response types
+interface TranscriptionRequest {
+  s3Key: string;
+  sessionDate: string;
+  therapistId: string;
+  userId: string;
+  sessionId: string;
+}
+
+interface SummaryResponse {
+  data: string;
+}
+
+interface SummaryData {
+  summary: string;
+  shortSummary: string;
+  keyPoints: string[];
+  insights: string[];
+  mood: string;
+  progress: string;
+  goals: string[];
+  warnings: string[];
+  journalingPrompt: string;
+}
+
+// Use Record<string, any> to make it compatible with Firestore
+interface SessionData extends Record<string, unknown> {
+  sessionDate: Date;
+  therapistId: string;
+  patientId: string;
+  summary: string;
+  shortSummary: string;
+  keyPoints: string[];
+  insights: string[];
+  mood: string;
+  progress: string;
+  goals: string[];
+  warnings: string[];
+  transcript: string;
+  journalingPrompt: string;
+  journalingResponse: string;
+  status: string;
+}
 
 const s3 = new AWS.S3({
   accessKeyId: process.env.S3_KEY_ID!,
@@ -21,10 +81,12 @@ export async function POST(req: NextRequest) {
 
   try {
     // Parse and validate request body
-    let body;
+    let body: TranscriptionRequest;
     try {
       body = await req.json();
-    } catch (parseError) {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (_) {
+      // Using underscore to indicate intentionally unused parameter
       return NextResponse.json({ error: "Invalid JSON in request body" }, { status: 400 });
     }
 
@@ -35,7 +97,7 @@ export async function POST(req: NextRequest) {
     }
 
     console.log('🥳');
-    const db = admin.firestore();
+    const { db } = getFirebaseAdmin();
 
     // Download MP4 file from S3
     console.log('🥳');
@@ -50,9 +112,9 @@ export async function POST(req: NextRequest) {
 
     try {
       const s3Stream = s3.getObject({ Bucket: bucketName, Key: objectKey }).createReadStream();
-      await new Promise((resolve, reject) => {
+      await new Promise<void>((resolve, reject) => {
         s3Stream.pipe(fileStream);
-        s3Stream.on("end", resolve);
+        s3Stream.on("end", () => resolve());
         s3Stream.on("error", reject);
       });
     } catch (s3Error) {
@@ -63,9 +125,12 @@ export async function POST(req: NextRequest) {
     console.log('🥳');
     let transcription;
     try {
+      // Use FileReadStream with proper typings
+      const fileReadStream = fs.createReadStream(filePath);
+      
       transcription = await openai.audio.transcriptions.create({
         model: "whisper-1",
-        file: fs.createReadStream(filePath) as any,
+        file: fileReadStream,
         response_format: "json",
       });
     } catch (transcriptionError) {
@@ -81,7 +146,7 @@ export async function POST(req: NextRequest) {
 
     // Fetch summary
     console.log('🥳');
-    let summaryText;
+    let summaryText: SummaryData;
     try {
       const summaryResponse = await fetch("http://localhost:3000/api/getSummary", {
         method: "POST",
@@ -93,7 +158,7 @@ export async function POST(req: NextRequest) {
         throw new Error(`Summary API returned ${summaryResponse.status}: ${await summaryResponse.text()}`);
       }
 
-      const summaryJson = await summaryResponse.json();
+      const summaryJson: SummaryResponse = await summaryResponse.json();
       if (!summaryJson.data) {
         throw new Error("Summary API response missing 'data' field");
       }
@@ -112,7 +177,7 @@ export async function POST(req: NextRequest) {
       throw new Error("Invalid sessionDate format");
     }
 
-    const newSession = {
+    const newSession: SessionData = {
       sessionDate: newSessionDate,
       therapistId,
       patientId: userId,

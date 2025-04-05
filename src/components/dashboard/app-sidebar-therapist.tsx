@@ -26,7 +26,8 @@ import {
   getDocs,
   where,
   orderBy,
-  limit
+  limit,
+  Firestore
 } from "firebase/firestore"
 import { onAuthStateChanged } from "firebase/auth"
 
@@ -46,7 +47,7 @@ import {
 interface NavItem {
   title: string;
   url: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   badge?: string;
   className?: string;
 }
@@ -145,7 +146,7 @@ export function TherapistSidebar() {
   }, [])
 
   // Function to fetch patient count
-  const fetchPatientCount = async (therapistId: string, db: any) => {
+  const fetchPatientCount = async (therapistId: string, db: Firestore) => {
     try {
       const sessionsRef = collection(db, "sessions")
       const q = query(
@@ -167,7 +168,7 @@ export function TherapistSidebar() {
   }
 
   // Function to fetch total schedule count (matches SchedulePage)
-  const fetchScheduleCount = async (therapistId: string, db: any) => {
+  const fetchScheduleCount = async (therapistId: string, db: Firestore) => {
     try {
       const sessionsRef = collection(db, "sessions")
       const q = query(
@@ -183,7 +184,7 @@ export function TherapistSidebar() {
   }
 
   // Function to fetch next session
-  const fetchNextSession = async (therapistId: string, db: any) => {
+  const fetchNextSession = async (therapistId: string, db: Firestore) => {
     try {
       const now = new Date()
       const sessionsRef = collection(db, "sessions")
@@ -199,7 +200,7 @@ export function TherapistSidebar() {
       if (!querySnapshot.empty) {
         const docSnap = querySnapshot.docs[0]
         const data = docSnap.data()
-        let session: Session = {
+        const session: Session = {
           id: docSnap.id,
           sessionDate: data.sessionDate.toDate(),
           therapistId: data.therapistId,

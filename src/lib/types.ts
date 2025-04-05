@@ -2,8 +2,7 @@ import {
   LocalAudioTrack, 
   LocalVideoTrack, 
   videoCodecs, 
-  VideoCodec, 
-  RTCIceServer 
+  VideoCodec,  
 } from 'livekit-client';
 
 /**

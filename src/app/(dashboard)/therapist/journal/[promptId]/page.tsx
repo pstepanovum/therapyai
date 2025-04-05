@@ -20,8 +20,31 @@ import {
   Send,
 } from "lucide-react"
 
+// Define interfaces for our data types
+interface JournalEntry {
+  id: number;
+  date: string;
+  time: string;
+  therapist: string;
+  summary: string;
+  detailedNotes: string;
+  keyPoints: string[];
+  insights: string[];
+  mood: string;
+  progress: string;
+  goals: string[];
+  warnings: string[];
+}
+
+interface ChatMessage {
+  id: number;
+  type: 'user' | 'bot';
+  content: string;
+  timestamp: Date;
+}
+
 // Sample data - In a real app, this would come from an API
-const journalEntry = {
+const journalEntry: JournalEntry = {
   id: 1,
   date: "2025-02-20",
   time: "3:30 PM",
@@ -60,13 +83,14 @@ We explored these patterns using cognitive behavioral techniques and developed s
 export default function SessionDetailsPage() {
   const router = useRouter()
   const params = useParams()
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { promptId } = params
 
-  // Chat state
-  const [messages, setMessages] = useState([])
+  // Chat state with proper typing
+  const [messages, setMessages] = useState<ChatMessage[]>([])
   const [newMessage, setNewMessage] = useState("")
   const [isTyping, setIsTyping] = useState(false)
-  const chatEndRef = useRef(null)
+  const chatEndRef = useRef<HTMLDivElement | null>(null)
 
   // Scroll to bottom of chat when new messages arrive
   useEffect(() => {
@@ -81,7 +105,7 @@ export default function SessionDetailsPage() {
     if (!newMessage.trim()) return
 
     // Add user message
-    const userMessage = {
+    const userMessage: ChatMessage = {
       id: messages.length + 1,
       type: 'user',
       content: newMessage,
@@ -94,7 +118,7 @@ export default function SessionDetailsPage() {
     // Simulate AI response
     setTimeout(() => {
       setIsTyping(false)
-      const botMessage = {
+      const botMessage: ChatMessage = {
         id: messages.length + 2,
         type: 'bot',
         content: "I understand you'd like to know more about this session. What specific aspect would you like me to explain further?",
@@ -255,7 +279,7 @@ export default function SessionDetailsPage() {
                 <div className="text-center py-4">
                   <Bot className="h-8 w-8 text-[#146C94]/40 mx-auto mb-2" />
                   <p className="text-gray-500 text-sm">
-                    Ask me anything about this session's insights and recommendations.
+                    Ask me anything about this session&apos;s insights and recommendations.
                   </p>
                 </div>
               ) : (
@@ -298,7 +322,7 @@ export default function SessionDetailsPage() {
                 placeholder="Type your question..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
-                onKeyPress={(e) => {
+                onKeyPress={(e: React.KeyboardEvent<HTMLInputElement>) => {
                   if (e.key === 'Enter') {
                     handleSendMessage()
                   }
