@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { initializeFirebaseAdmin } from "@/app/utils/firebase/admin";
 
 // Initialize Firebase Admin SDK
@@ -44,15 +43,15 @@ interface UpdateSessionRequest {
   status?: string;
 }
 
-// Simplified approach using standard Web API types
-export async function PUT(
-  request: Request,
-  { params }: { params: { sessionId: string } }
-) {
-  const { sessionId } = params;
+// Fallback approach: Extract sessionId from URL
+export async function PUT(request: NextRequest) {
+  // Extract sessionId from the URL path
+  const url = new URL(request.url);
+  const pathParts = url.pathname.split('/');
+  const sessionId = pathParts[pathParts.length - 1];
 
   if (!sessionId) {
-    return Response.json({ error: "Session ID is required" }, { status: 400 });
+    return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
   }
 
   try {
@@ -95,7 +94,7 @@ export async function PUT(
     if (status) updatedSession.status = status;
 
     if (Object.keys(updatedSession).length === 0) {
-      return Response.json({ error: "No fields provided to update" }, { status: 400 });
+      return NextResponse.json({ error: "No fields provided to update" }, { status: 400 });
     }
 
     const sessionRef = db.doc(`sessions/${sessionId}`);
@@ -103,9 +102,9 @@ export async function PUT(
 
     console.log(`Session ${sessionId} updated successfully:`, updatedSession);
 
-    return Response.json({ message: "Session updated successfully", updatedSession }, { status: 200 });
+    return NextResponse.json({ message: "Session updated successfully", updatedSession }, { status: 200 });
   } catch (error) {
     console.error("Error updating session:", error);
-    return Response.json({ error: "Failed to update session" }, { status: 500 });
+    return NextResponse.json({ error: "Failed to update session" }, { status: 500 });
   }
 }
