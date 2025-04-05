@@ -43,9 +43,12 @@ interface UpdateSessionRequest {
   status?: string;
 }
 
-export async function PUT(req: NextRequest, { params }: { params: { sessionId: string } }) {
+export async function PUT(
+  req: NextRequest,
+  context: { params: { sessionId: string } }
+) {
   try {
-    const { sessionId } = params;
+    const { sessionId } = context.params;
 
     if (!sessionId) {
       return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
@@ -93,8 +96,8 @@ export async function PUT(req: NextRequest, { params }: { params: { sessionId: s
       return NextResponse.json({ error: "No fields provided to update" }, { status: 400 });
     }
 
-    const sessionRef = db.doc(`sessions/${sessionId}`); // Use db.doc() instead of standalone doc()
-    await sessionRef.set(updatedSession, { merge: true }); // Use set with merge option
+    const sessionRef = db.doc(`sessions/${sessionId}`);
+    await sessionRef.set(updatedSession, { merge: true });
 
     console.log(`Session ${sessionId} updated successfully:`, updatedSession);
 
