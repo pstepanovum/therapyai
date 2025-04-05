@@ -13,7 +13,8 @@ import {
   UserCircle,
   BellRing,
   LogOut,
-  MessageSquare
+  MessageSquare,
+  Notebook
 } from "lucide-react"
 import { signOut } from "firebase/auth"
 import { auth } from "@/app/utils/firebase/config"
@@ -72,6 +73,11 @@ const mainNavItems: NavItem[] = [
     title: "Notes",
     url: "/therapist/notes",
     icon: ClipboardList
+  },
+  { 
+    title: "Sessions",
+    url: "/therapist/sessions",
+    icon: Notebook // Replace this with the appropriate Lucide icon for sessions
   },
   { 
     title: "Messages",
