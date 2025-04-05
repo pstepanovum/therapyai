@@ -1,30 +1,29 @@
-import * as React from "react";
-import { isVideoCodec } from "@/lib/types";
-import { PageClientImpl } from "./components/PageClientImplementation";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import * as React from 'react';
+import { isVideoCodec } from '@/lib/types';
+import { PageClientImpl } from './components/PageClientImplementation';
 
-export default function Page({
-  params,
-  searchParams,
-}: {
-  params: { roomsName: string }; // This matches the folder structure [roomsName]
-  searchParams: {
-    region?: string;
-    hq?: string;
-    codec?: string;
-  };
-}) {
-  // No need to await searchParams, it's already an object
+// Remove the explicit type annotation and use a more basic approach
+export default function Page(props: any) {
+  const { params, searchParams } = props;
+  
+  // Make sure we have the roomsName from params
+  const roomsName = params?.roomsName || '';
+  
+  // Handle the codec logic
   const codec =
-    typeof searchParams.codec === "string" && isVideoCodec(searchParams.codec)
+    typeof searchParams?.codec === 'string' && isVideoCodec(searchParams.codec)
       ? searchParams.codec
-      : "vp9";
+      : 'vp9';
 
-  const hq = searchParams.hq === "true";
+  // Parse the hq parameter
+  const hq = searchParams?.hq === 'true';
 
+  // Return the component with the properly named props
   return (
     <PageClientImpl
-      roomName={params.roomsName} // Send the roomsName parameter as roomName prop
-      region={searchParams.region}
+      roomName={roomsName}
+      region={searchParams?.region}
       hq={hq}
       codec={codec}
     />
