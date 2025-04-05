@@ -128,5 +128,5 @@ const BookingDialog: React.FC<BookingDialogProps> = ({
     </DialogContent>
   );
 };
-
+ 
 export default BookingDialog;
