@@ -1,36 +1,150 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# TherapAI
 
-## Getting Started
+## Modern Therapy Sessions with AI-Powered Insights
 
-First, run the development server:
+![TherapAI Logo](public/web-app-manifest-192x192.png)
+
+TherapAI is a cutting-edge platform that bridges the gap between mental health professionals and their patients through technology. By recording, transcribing, and summarizing therapy sessions, TherapAI provides valuable insights and reference points that enhance the therapeutic journey.
+
+## 🧠 About TherapAI
+
+TherapAI was born from the recognition that both therapists and patients often struggle to remember important details from previous sessions. Therapists managing 20+ patients weekly can miss crucial information, while patients rarely take comprehensive notes during their sessions. TherapAI solves this problem by creating a secure, AI-enhanced system that captures, analyzes, and organizes therapy sessions for improved continuity of care.
+
+## ✨ Features
+
+### For Patients
+- **Personalized Dashboard**: Access all previous sessions, messages, and journaling prompts
+- **Session History**: Review AI-generated summaries, key points, and insights from past sessions
+- **Journaling**: Respond to therapist-assigned journaling prompts
+- **Appointment Scheduling**: Easily book and manage therapy appointments
+- **Secure Messaging**: Direct communication with your therapist
+- **Pattern Recognition**: View emerging patterns from your therapy journey
+- **Video Sessions**: Join secure video calls with your therapist
+
+### For Therapists
+- **Patient Management**: Organize and access information for all patients
+- **Session Tools**: Record, review, and reference past therapy sessions
+- **AI Summaries**: Automatically generated session summaries, key points, and insights
+- **Journaling Assignments**: Create and track patient journaling exercises
+- **Calendar Integration**: Manage your appointment schedule
+- **Secure Communications**: Message patients within the platform
+- **Progress Tracking**: Monitor patient progress over time
+
+## 🛠️ Technology Stack
+
+- **Frontend/Backend**: Next.js (App Router)
+- **Database**: Firestore (NoSQL)
+- **Video Conferencing**: LiveKit API
+- **Storage**: AWS S3 buckets for secure session recordings
+- **Authentication**: Firebase Authentication
+- **Transcription**: OpenAI Whisper API
+- **Analysis/Summarization**: OpenAI GPT-4
+- **Email Notifications**: SendGrid
+- **Styling**: Tailwind CSS with Shadcn/UI components
+
+## 🏗️ Architecture
+
+TherapAI follows a modern fullstack architecture:
+
+1. **User Authentication**: Secure login with role-based access control (patient/therapist)
+2. **Video Sessions**: Real-time video conferencing with recording capabilities
+3. **Processing Pipeline**:
+   - Video recording stored in AWS S3
+   - Audio extracted and sent to Whisper API for transcription
+   - Transcript processed by GPT-4 for summary generation
+   - Results stored in Firestore database
+4. **Data Access**: Secure, role-appropriate access to sessions, summaries, and communications
+
+## 📋 Installation
 
 ```bash
+# Clone the repository
+git clone https://github.com/yourusername/therapai.git
+cd therapai
+
+# Install dependencies
+npm install
+
+# Set up environment variables (see .env.example)
+cp .env.example .env.local
+
+# Run the development server
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ⚙️ Environment Variables
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env.local` file with the following variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+# Firebase
+NEXT_PUBLIC_FIREBASE_API_KEY=
+NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=
+NEXT_PUBLIC_FIREBASE_PROJECT_ID=
+NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=
+NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=
+NEXT_PUBLIC_FIREBASE_APP_ID=
+FIREBASE_ADMIN_PRIVATE_KEY=
+FIREBASE_ADMIN_CLIENT_EMAIL=
 
-## Learn More
+# LiveKit
+LIVEKIT_API_KEY=
+LIVEKIT_API_SECRET=
+NEXT_PUBLIC_LIVEKIT_URL=
 
-To learn more about Next.js, take a look at the following resources:
+# AWS S3
+AWS_ACCESS_KEY_ID=
+AWS_SECRET_ACCESS_KEY=
+AWS_REGION=
+AWS_BUCKET_NAME=
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# OpenAI
+OPENAI_API_KEY=
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# SendGrid
+SENDGRID_API_KEY=
+```
 
-## Deploy on Vercel
+## 🚀 Deployment
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+TherapAI can be deployed to Vercel or any other platform that supports Next.js applications:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```bash
+# Install Vercel CLI
+npm install -g vercel
+
+# Deploy
+vercel
+```
+
+## 💡 Future Enhancements
+
+- **Enhanced Analytics**: More robust data analytics for tracking progress over time
+- **Advanced AI Capabilities**: Deeper sentiment analysis and personalized follow-up recommendations
+- **Therapist Customization**: Allow therapists to customize summarization parameters
+- **Mobile Application**: Dedicated mobile apps for iOS and Android
+- **Integration with Health Records**: Secure integration with electronic health record systems
+- **Group Therapy Support**: Extensions for managing and analyzing group therapy sessions
+
+## 🔒 Security & Compliance
+
+TherapAI prioritizes the security and privacy of sensitive healthcare data:
+
+- End-to-end encryption for all communications
+- HIPAA-compliant data storage and processing
+- Strict access controls based on user roles
+- Regular security audits and updates
+- Transparent data usage policies
+
+## 👥 Contributing
+
+We welcome contributions to TherapAI! Please see our [Contributing Guidelines](CONTRIBUTING.md) for more information.
+
+## 📄 License
+
+TherapAI is licensed under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgements
+
+- This project was created during [Hackathon Name] by [Team Members]
+- Special thanks to [Mentors/Sponsors/Others] for their guidance and support
