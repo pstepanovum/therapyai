@@ -43,18 +43,19 @@ interface UpdateSessionRequest {
   status?: string;
 }
 
+// The Next.js 15 way to define route params
 export async function PUT(
-  req: NextRequest,
-  context: { params: { sessionId: string } }
-) {
+  request: NextRequest,
+  { params }: { params: { sessionId: string } }
+): Promise<NextResponse> {
+  const { sessionId } = params;
+
+  if (!sessionId) {
+    return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
+  }
+
   try {
-    const { sessionId } = context.params;
-
-    if (!sessionId) {
-      return NextResponse.json({ error: "Session ID is required" }, { status: 400 });
-    }
-
-    const requestData: UpdateSessionRequest = await req.json();
+    const requestData: UpdateSessionRequest = await request.json();
     const {
       sessionDate,
       therapistId,
