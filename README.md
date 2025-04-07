@@ -146,5 +146,5 @@ TherapAI is licensed under the [MIT License](LICENSE).
 
 ## 🙏 Acknowledgements
 
-- This project was created during [Hackathon Name] by [Team Members]
-- Special thanks to [Mentors/Sponsors/Others] for their guidance and support
+- This project was created during TherapyAI by Pavel Stepanov, Hunter Todd, Tim Shaw
+- Special thanks to University of Miami for their guidance and support
