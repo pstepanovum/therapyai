@@ -85,7 +85,7 @@ const FeaturesSection = () => {
 
         {/* Bottom Section */}
         <motion.div variants={fadeInUp} className="mt-20 text-center py-10 px-6 rounded-2xl bg-[#AFD3E2]/20">
-          <div className="inline-flex items-center justify-center p-4 bg-[#AFD3E2]/20 rounded-full mb-4">
+          <div className="inline-flex items-center justify-center p-4 mb-4">
             <Image 
               src="/logo/therapyAI-black.png" 
               alt="TherapyAI Logo" 

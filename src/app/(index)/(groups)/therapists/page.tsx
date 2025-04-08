@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import NavbarLanding from "@/components/navbar/navbar-landing";
 import FooterDashboard from "@/components/footer/footer-landing";
+import { Star } from "lucide-react";
 
 const TherapistsPage = () => {
   // Benefits data
@@ -76,8 +77,12 @@ const TherapistsPage = () => {
 
       <main className="flex-grow bg-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-[#F8FBFC] to-white py-20 px-4">
+        <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#AFD3E2] mb-6">
+              <Star className="w-4 h-4 text-[#146C94]" />
+              <span className="text-[#146C94] text-sm font-medium">Your Mental Health Journey</span>
+            </div>
             <h1 className="text-4xl md:text-5xl font-bold text-[#146C94] mb-6">
               Transform Your Therapy Practice with AI
             </h1>

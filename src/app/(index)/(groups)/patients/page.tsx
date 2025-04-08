@@ -42,18 +42,18 @@ const PatientsPage = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-gradient-to-b from-white to-[#F8FBFF]">
+    <div className="min-h-screen flex flex-col">
       <NavbarWaitlist />
-      
-      <main className="flex-grow">
+
+      <main className="flex-grow bg-white">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-[#F8FBFC] to-white py-20 px-4">
+        <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#AFD3E2] mb-6">
               <Star className="w-4 h-4 text-[#146C94]" />
               <span className="text-[#146C94] text-sm font-medium">Your Mental Health Journey</span>
             </div>
-            
+
             <h1 className="text-4xl md:text-5xl font-bold text-[#146C94] mb-6">
               <span className="text-[#146C94]">Your Journey to</span>
               <br />
@@ -93,7 +93,7 @@ const PatientsPage = () => {
                 Our platform provides the tools you need to engage with therapy in a way that works for you.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-3 gap-8">
               {features.map((feature, index) => (
                 <div
@@ -112,7 +112,7 @@ const PatientsPage = () => {
         </section>
 
         {/* Benefits Section */}
-        <section className="py-20 px-4 bg-gradient-to-b from-white to-[#F8FBFC]">
+        <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-[#146C94] mb-4">
@@ -122,7 +122,7 @@ const PatientsPage = () => {
                 We&apos;re committed to making mental healthcare accessible, convenient, and effective.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <div className="flex items-start gap-3 mb-3">
@@ -131,7 +131,7 @@ const PatientsPage = () => {
                 </div>
                 <p className="text-[#146C94]/70 ml-9">Book sessions that fit your schedule, with easy rescheduling options when life gets busy.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <div className="flex items-start gap-3 mb-3">
                   <Shield className="w-6 h-6 text-[#146C94] mt-1 flex-shrink-0" />
@@ -139,7 +139,7 @@ const PatientsPage = () => {
                 </div>
                 <p className="text-[#146C94]/70 ml-9">Your privacy is our priority with end-to-end encrypted sessions and HIPAA-compliant systems.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <div className="flex items-start gap-3 mb-3">
                   <Heart className="w-6 h-6 text-[#146C94] mt-1 flex-shrink-0" />
@@ -147,7 +147,7 @@ const PatientsPage = () => {
                 </div>
                 <p className="text-[#146C94]/70 ml-9">Get matched with therapists who understand your unique needs and concerns.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <div className="flex items-start gap-3 mb-3">
                   <FileText className="w-6 h-6 text-[#146C94] mt-1 flex-shrink-0" />
@@ -170,7 +170,7 @@ const PatientsPage = () => {
                 Getting started with TherapyAI is simple and straightforward.
               </p>
             </div>
-            
+
             <div className="max-w-4xl mx-auto">
               <div className="space-y-6">
                 <div className="flex items-start gap-4 bg-[#F8FBFC] rounded-xl p-6">
@@ -180,7 +180,7 @@ const PatientsPage = () => {
                     <p className="text-[#146C94]/70">Complete a brief questionnaire about your needs and preferences to help us match you with the right therapist.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4 bg-[#F8FBFC] rounded-xl p-6">
                   <div className="h-8 w-8 bg-[#146C94] rounded-full flex items-center justify-center text-white font-medium text-lg flex-shrink-0">2</div>
                   <div>
@@ -188,7 +188,7 @@ const PatientsPage = () => {
                     <p className="text-[#146C94]/70">We&apos;ll connect you with therapists who specialize in your areas of concern and fit your preferences.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4 bg-[#F8FBFC] rounded-xl p-6">
                   <div className="h-8 w-8 bg-[#146C94] rounded-full flex items-center justify-center text-white font-medium text-lg flex-shrink-0">3</div>
                   <div>
@@ -196,7 +196,7 @@ const PatientsPage = () => {
                     <p className="text-[#146C94]/70">Choose a time that works for you and begin your mental health journey with your selected therapist.</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-start gap-4 bg-[#F8FBFC] rounded-xl p-6">
                   <div className="h-8 w-8 bg-[#146C94] rounded-full flex items-center justify-center text-white font-medium text-lg flex-shrink-0">4</div>
                   <div>
@@ -208,9 +208,9 @@ const PatientsPage = () => {
             </div>
           </div>
         </section>
-        
+
         {/* Testimonials Section */}
-        <section className="py-20 px-4 bg-gradient-to-b from-[#F8FBFC] to-white">
+        <section className="py-20 px-4 ">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
               <h2 className="text-3xl font-bold text-[#146C94] mb-4">
@@ -220,7 +220,7 @@ const PatientsPage = () => {
                 Hear from people who have transformed their mental health journey with TherapyAI.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 gap-8">
               {testimonials.map((testimonial, index) => (
                 <div
@@ -242,30 +242,30 @@ const PatientsPage = () => {
             </div>
           </div>
         </section>
-        
+
         {/* FAQ Section */}
         <section className="py-20 px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-3xl font-bold text-[#146C94] mb-12 text-center">
               Frequently Asked Questions
             </h2>
-            
+
             <div className="space-y-6">
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-[#146C94] mb-2">Is online therapy as effective as in-person therapy?</h3>
                 <p className="text-[#146C94]/70">Research shows that online therapy can be just as effective as in-person therapy for many conditions. Our platform enhances the experience with additional tools and resources to support your progress between sessions.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-[#146C94] mb-2">Is my information kept private?</h3>
                 <p className="text-[#146C94]/70">Absolutely. TherapyAI is fully HIPAA compliant and uses end-to-end encryption for all communications. Your privacy and confidentiality are our top priorities.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-[#146C94] mb-2">How much does therapy cost through your platform?</h3>
                 <p className="text-[#146C94]/70">Therapy costs vary based on your therapist&apos;s rates and your insurance coverage. Many of our therapists accept insurance, and we offer transparent pricing before you book.</p>
               </div>
-              
+
               <div className="bg-[#F8FBFC] rounded-xl p-6">
                 <h3 className="text-xl font-semibold text-[#146C94] mb-2">Can I switch therapists if I&apos;m not satisfied?</h3>
                 <p className="text-[#146C94]/70">Yes, finding the right therapist is important. If you feel you need to switch, you can easily do so through our platform with no questions asked.</p>
@@ -273,7 +273,7 @@ const PatientsPage = () => {
             </div>
           </div>
         </section>
-        
+
         {/* CTA Section */}
         <section className="bg-[#F8FBFC] py-16 px-4 text-center">
           <div className="max-w-3xl mx-auto">

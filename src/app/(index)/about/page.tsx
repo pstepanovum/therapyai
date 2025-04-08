@@ -61,7 +61,7 @@ const AboutPage = () => {
       
       <main className="flex-grow">
         {/* Hero Section */}
-        <section className="bg-gradient-to-b from-[#F8FBFC] to-white py-20 px-4">
+        <section className="bg-[#FFFFFF] py-20 px-4">
           <div className="max-w-6xl mx-auto text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-[#146C94] mb-6">
               Our Mission to Transform<br />
