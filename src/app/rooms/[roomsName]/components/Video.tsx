@@ -1,6 +1,4 @@
 import type {
-    MessageDecoder,
-    MessageEncoder,
     TrackReferenceOrPlaceholder,
     WidgetState,
   } from '@livekit/components-core';
@@ -19,17 +17,17 @@ import type {
     RoomAudioRenderer,
   } from '@livekit/components-react';
   import { useCreateLayoutContext } from '@livekit/components-react';
-  import { usePinnedTracks, useTracks } from '@livekit/components-react';
+  import { usePinnedTracks, useTracks, useRoomContext } from '@livekit/components-react';
   import { Chat } from '@livekit/components-react';
   import { ControlBar } from '@livekit/components-react';
+  import LivekitTranscription from '@/components/LivekitTranscription';
+  import { Button } from '@/components/ui/button';
   
   /**
    * @public
    */
   export interface VideoConferenceProps extends React.HTMLAttributes<HTMLDivElement> {
     chatMessageFormatter?: MessageFormatter;
-    chatMessageEncoder?: MessageEncoder;
-    chatMessageDecoder?: MessageDecoder;
     /** @alpha */
     SettingsComponent?: React.ComponentType;
   }
@@ -54,8 +52,6 @@ import type {
    */
   export function VideoConference({
     chatMessageFormatter,
-    chatMessageDecoder,
-    chatMessageEncoder,
     SettingsComponent,
     ...props
   }: VideoConferenceProps) {
@@ -64,7 +60,9 @@ import type {
       unreadMessages: 0,
       showSettings: false,
     });
+    const [showTranscriptionControls, setShowTranscriptionControls] = React.useState(false);
     const lastAutoFocusedScreenShareTrack = React.useRef<TrackReferenceOrPlaceholder | null>(null);
+    const room = useRoomContext();
   
     const tracks = useTracks(
       [
@@ -126,13 +124,16 @@ import type {
       focusTrack?.publication?.trackSid,
       tracks,
     ]);
+
+    const toggleTranscriptionControls = () => {
+      setShowTranscriptionControls(!showTranscriptionControls);
+    };
     
     return (
       <div className="lk-video-conference" {...props}>
         {isWeb() && (
           <LayoutContextProvider
             value={layoutContext}
-            // onPinChange={handleFocusStateChange}
             onWidgetChange={widgetUpdate}
           >
             <div className="lk-video-conference-inner">
@@ -153,12 +154,29 @@ import type {
                 </div>
               )}
               <ControlBar controls={{ chat: true, settings: !!SettingsComponent }} />
+              <div className="flex items-center justify-center mt-2">
+                <Button 
+                  onClick={toggleTranscriptionControls} 
+                  variant="outline" 
+                  size="sm"
+                  className="bg-black text-white hover:bg-gray-800"
+                >
+                  {showTranscriptionControls ? 'Hide Transcription Controls' : 'Show Transcription Controls'}
+                </Button>
+              </div>
+              {showTranscriptionControls && (
+                <div className="mt-2 flex justify-center">
+                  <LivekitTranscription 
+                    room={room} 
+                    roomName={room?.name || ''} 
+                    className="mx-auto"
+                  />
+                </div>
+              )}
             </div>
             <Chat
               style={{ display: widgetState.showChat ? 'grid' : 'none' }}
               messageFormatter={chatMessageFormatter}
-              messageEncoder={chatMessageEncoder}
-              messageDecoder={chatMessageDecoder}
             />
             {SettingsComponent && (
               <div
