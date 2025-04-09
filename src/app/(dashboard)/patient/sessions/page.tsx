@@ -20,27 +20,9 @@ import {
 } from "lucide-react"
 import { getFirestore, collection, query, where, getDocs, doc, getDoc } from "firebase/firestore"
 import { auth } from "@/app/utils/firebase/config"
+import { Session } from "../../shared/types/interfaces"
 
 // Define a proper interface for a session document
-export interface Session {
-  id: string;
-  sessionDate: Date;       // Full date and time of the session
-  therapist: string;       // Therapist's display name (to be fetched from users collection)
-  therapistId: string;     // Therapist's UID (matches a document in users)
-  summary: string;
-  shortSummary?: string;
-  keyPoints: string[];
-  insights: string[];
-  mood: string;
-  progress: string;        // E.g., "Upcoming", "Completed", etc.
-  goals: string[];
-  warnings: string[];
-  transcript: string;
-  journalingPrompt: string;
-  journalingResponse: string;
-  patientId: string;
-  status: string;
-}
 
 export default function SessionsPage() {
   const [selectedPeriod, setSelectedPeriod] = useState("recent")

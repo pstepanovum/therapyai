@@ -14,20 +14,7 @@ import {
 } from "lucide-react"
 import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc } from "firebase/firestore"
 import { auth } from "@/app/utils/firebase/config"
-
-// Define an interface for a session
-interface Session {
-  id: string;
-  sessionDate: Date;
-  therapist: string;
-  therapistId: string;
-  summary: string;
-  shortSummary?: string;
-  journalingPrompt: string;
-  journalingResponse: string;
-  patientId: string;
-  status: string;
-}
+import { Session } from "@/app/(dashboard)/shared/types/interfaces";
 
 export default function JournalPage() {
   const [sessions, setSessions] = useState<Session[]>([])
@@ -50,8 +37,9 @@ export default function JournalPage() {
         const sessionsRef = collection(db, "sessions")
         const q = query(sessionsRef, where("patientId", "==", currentUser.uid))
         const querySnapshot = await getDocs(q)
+        
         const fetchedSessions: Session[] = querySnapshot.docs.map(doc => {
-          const data = doc.data()
+          const data = doc.data();
           return {
             id: doc.id,
             sessionDate: data.sessionDate.toDate(),
@@ -63,8 +51,16 @@ export default function JournalPage() {
             journalingResponse: data.journalingResponse || "",
             patientId: data.patientId,
             status: data.status || "",
-          }
-        })
+            keyPoints: data.keyPoints || [],
+            insights: data.insights || [],
+            mood: data.mood || "",
+            progress: data.progress || "",
+            goals: data.goals || [],
+            warnings: data.warnings || [],
+            transcript: data.transcript || "",
+            patientName: data.patientName || ""
+          };
+        });
 
         const sessionsWithTherapistName = await Promise.all(
           fetchedSessions.map(async (session) => {

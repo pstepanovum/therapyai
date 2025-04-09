@@ -20,28 +20,7 @@ import {
   Send,
 } from "lucide-react"
 
-// Define interfaces for our data types
-interface JournalEntry {
-  id: number;
-  date: string;
-  time: string;
-  therapist: string;
-  summary: string;
-  detailedNotes: string;
-  keyPoints: string[];
-  insights: string[];
-  mood: string;
-  progress: string;
-  goals: string[];
-  warnings: string[];
-}
-
-interface ChatMessage {
-  id: number;
-  type: 'user' | 'bot';
-  content: string;
-  timestamp: Date;
-}
+import { JournalEntry, ChatMessage } from "@/app/(dashboard)/shared/types/interfaces";
 
 // Sample data - In a real app, this would come from an API
 const journalEntry: JournalEntry = {
@@ -290,11 +269,10 @@ export default function SessionDetailsPage() {
                       className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
                     >
                       <div
-                        className={`rounded-lg p-2 max-w-[80%] ${
-                          message.type === 'user'
+                        className={`rounded-lg p-2 max-w-[80%] ${message.type === 'user'
                             ? 'bg-[#146C94] text-white'
                             : 'bg-gray-100 text-gray-800'
-                        }`}
+                          }`}
                       >
                         <p className="text-sm">{message.content}</p>
                       </div>

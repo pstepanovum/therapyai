@@ -203,14 +203,12 @@ export default function SchedulePage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-lg text-[#146C94] animate-pulse">Loading your schedule...</div>
-      </div>
+      <div className="p-6 max-w-6xl mx-auto">Loading your schedule...</div>
     )
   }
 
   return (
-    <div className="p-3 md:p-6 mx-auto max-w-7xl min-h-screen bg-gray-50">
+    <div className="p-6 max-w-6xl mx-auto min-h-screen">
       {/* Success Message */}
       {successMessage && (
         <div className="fixed top-6 right-6 bg-green-50 text-green-700 px-4 py-2 rounded-lg shadow-lg z-50 animate-fade-in max-w-xs md:max-w-md">
@@ -219,10 +217,10 @@ export default function SchedulePage() {
       )}
 
       {/* Header */}
-      <div className="mb-4 md:mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+      <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-2xl md:text-3xl font-bold text-[#146C94]">Your Schedule</h1>
-          <p className="text-xs md:text-sm text-gray-600 mt-1">Manage your therapy sessions and appointments</p>
+          <h1 className="text-3xl font-bold text-[#146C94]">Your Schedule</h1>
+          <p className="text-gray-600 mt-2">Manage your therapy sessions and appointments</p>
         </div>
         <div className="flex items-center gap-2 md:gap-4 w-full md:w-auto justify-between md:justify-end">
           <div className="flex items-center bg-white rounded-lg border border-gray-200 p-1">

@@ -196,7 +196,7 @@ export default function SessionDetailsPage() {
 
   if (loading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-screen">
+      <div className="p-6 max-w-6xl mx-auto flex items-center justify-center min-h-screen">
         <div className="text-lg text-[#146C94] animate-pulse">Loading session details...</div>
       </div>
     );
@@ -204,15 +204,21 @@ export default function SessionDetailsPage() {
 
   if (error || !session) {
     return (
-      <div className="p-6 max-w-4xl mx-auto">
-        <Button
-          variant="ghost"
-          className="mb-4"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Sessions
-        </Button>
+      <div className="p-6 max-w-6xl mx-auto">
+        <div className="mb-8 flex justify-between items-start">
+          <div>
+            <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
+            <p className="text-gray-600 mt-1">Session information</p>
+          </div>
+          <Button
+            variant="ghost"
+            onClick={() => router.back()}
+            className="flex items-center"
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            Back to Sessions
+          </Button>
+        </div>
         <Card>
           <CardContent className="flex flex-col items-center justify-center py-12">
             <X className="h-12 w-12 text-red-500 mb-4" />
@@ -231,64 +237,66 @@ export default function SessionDetailsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      {/* Navigation Header */}
-      <div className="mb-6">
-        <Button
-          variant="ghost"
-          className="mb-4"
-          onClick={() => router.back()}
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to Sessions
-        </Button>
-        <div className="flex flex-col md:flex-row justify-between md:items-center gap-4 mb-2">
+      {/* Navigation Header with Button on Right */}
+      <div className="mb-8 flex flex-col md:flex-row justify-between md:items-start gap-4">
+        <div>
           <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
-          <div className="flex items-center gap-4">
-            {editMode ? (
-              <>
-                <Button 
-                  variant="outline" 
-                  className="border-red-300 text-red-600 hover:bg-red-50"
-                  onClick={() => {
-                    setEditMode(false);
-                    setEditedSummary(session.summary);
-                    setEditedInsights(session.insights);
-                    setEditedGoals(session.goals);
-                  }}
-                >
-                  <X className="mr-1 h-4 w-4" />
-                  Cancel
-                </Button>
-                <Button 
-                  className="bg-[#146C94]"
-                  onClick={handleSaveChanges}
-                  disabled={isSaving}
-                >
-                  {isSaving ? (
-                    <span className="flex items-center">Saving...</span>
-                  ) : (
-                    <>
-                      <Save className="mr-1 h-4 w-4" />
-                      Save Changes
-                    </>
-                  )}
-                </Button>
-              </>
-            ) : (
+          <p className="text-gray-600 mt-1">
+            Complete summary and notes for your therapy session with {session.patientName || 'Patient'}
+          </p>
+        </div>
+        <div className="flex items-center gap-4">
+          {!editMode && (
+            <Button
+              variant="ghost"
+              onClick={() => router.back()}
+              className="flex items-center"
+            >
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Sessions
+            </Button>
+          )}
+          {editMode ? (
+            <>
               <Button 
                 variant="outline" 
-                className="border-[#146C94]/30 text-[#146C94]"
-                onClick={() => setEditMode(true)}
+                className="border-red-300 text-red-600 hover:bg-red-50"
+                onClick={() => {
+                  setEditMode(false);
+                  setEditedSummary(session.summary);
+                  setEditedInsights(session.insights);
+                  setEditedGoals(session.goals);
+                }}
               >
-                <Edit className="mr-1 h-4 w-4" />
-                Edit Details
+                <X className="mr-1 h-4 w-4" />
+                Cancel
               </Button>
-            )}
-          </div>
+              <Button 
+                className="bg-[#146C94]"
+                onClick={handleSaveChanges}
+                disabled={isSaving}
+              >
+                {isSaving ? (
+                  <span className="flex items-center">Saving...</span>
+                ) : (
+                  <>
+                    <Save className="mr-1 h-4 w-4" />
+                    Save Changes
+                  </>
+                )}
+              </Button>
+            </>
+          ) : (
+            <Button 
+              variant="outline" 
+              className="border-[#146C94]/30 text-[#146C94]"
+              onClick={() => setEditMode(true)}
+            >
+              <Edit className="mr-1 h-4 w-4" />
+              Edit Details
+            </Button>
+          )}
         </div>
-        <p className="text-gray-600">
-          Complete summary and notes for your therapy session with {session.patientName || 'Patient'}
-        </p>
       </div>
 
       {/* Session Info Card */}
@@ -321,7 +329,7 @@ export default function SessionDetailsPage() {
       </Card>
 
       {/* Tabs for different sections */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-6">
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-8">
         <TabsList className="grid w-full grid-cols-4">
           <TabsTrigger value="summary">Summary</TabsTrigger>
           <TabsTrigger value="insights">Insights & Goals</TabsTrigger>

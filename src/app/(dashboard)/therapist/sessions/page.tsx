@@ -16,16 +16,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-interface Session {
-  id: string;
-  sessionDate: Date;
-  patientId: string;
-  patientName: string;
-  type: string;
-  status: string;
-  summary: string;
-}
+import { Session } from "@/app/(dashboard)/shared/types/interfaces";
 
 export default function SessionsPage() {
   const [sessions, setSessions] = useState<Session[]>([]);
@@ -79,9 +70,21 @@ export default function SessionsPage() {
               sessionDate,
               patientId: data.patientId,
               patientName,
-              type: data.type || 'Video Session',
               status: data.status || 'scheduled',
               summary: data.summary || 'No summary available',
+              // Add the following required fields with default values:
+              therapist: data.therapist || '',
+              therapistId: data.therapistId || '',
+              shortSummary: data.shortSummary || '',
+              keyPoints: data.keyPoints || [],
+              insights: data.insights || [],
+              mood: data.mood || '',
+              progress: data.progress || '',
+              goals: data.goals || [],
+              warnings: data.warnings || [],
+              transcript: data.transcript || '',
+              journalingPrompt: data.journalingPrompt || '',
+              journalingResponse: data.journalingResponse || ''
             };
           })
         );
@@ -117,8 +120,8 @@ export default function SessionsPage() {
     
     // Search query
     const matchesSearch = 
-      session.patientName.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      session.summary.toLowerCase().includes(searchQuery.toLowerCase());
+      (session.patientName?.toLowerCase() || '').includes(searchQuery.toLowerCase()) ||
+      (session.summary?.toLowerCase() || '').includes(searchQuery.toLowerCase());
     
     // Time range filter
     let matchesTimeRange = true;

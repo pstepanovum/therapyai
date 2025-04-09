@@ -3,7 +3,7 @@
 
 import { Inter } from "next/font/google"
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
-import { TherapistSidebar } from "@/components/dashboard/app-sidebar-therapist"
+import { TherapistSidebar } from "@/app/(dashboard)/shared/componenets/navbar/app-sidebar-therapist"
 import { useAuth } from '@/hooks/useAuth'
 import { AuthLoadingScreen } from "@/components/auth/AuthLoadingScreen"
 import { useEffect } from "react"

@@ -142,23 +142,25 @@ export default function SessionDetailsPage() {
   }
 
   if (loading) {
-    return <div className="p-6 max-w-4xl mx-auto">Loading session details...</div>
+    return <div className="p-6 max-w-6xl mx-auto">Loading session details...</div>
   }
 
   if (!sessionData) {
-    return <div className="p-6 max-w-4xl mx-auto">Session not found or you are not authorized to view it.</div>
+    return <div className="p-6 max-w-6xl mx-auto">Session not found or you are not authorized to view it.</div>
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      {/* Navigation Header */}
-      <div className="mb-6">
-        <Button variant="ghost" className="mb-4" onClick={() => router.back()}>
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Navigation Header with Button on Right */}
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
+          <p className="text-gray-600 mt-1">Complete summary and insights from your therapy session</p>
+        </div>
+        <Button variant="ghost" onClick={() => router.back()} className="flex items-center">
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Session Review
         </Button>
-        <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
-        <p className="text-gray-600 mt-1">Complete summary and insights from your therapy session</p>
       </div>
 
       {/* Session Info Card */}
@@ -184,7 +186,7 @@ export default function SessionDetailsPage() {
       </Card>
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         {/* Left Column - Summary and Notes */}
         <div className="md:col-span-2 space-y-6">
           {/* Session Summary */}
@@ -283,7 +285,7 @@ export default function SessionDetailsPage() {
       </div>
 
       {/* Chat Section */}
-      <div className="mt-8">
+      <div>
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold flex items-center gap-2">

@@ -1,8 +1,14 @@
-import React from 'react';
+import React, { useState, useRef } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import { Play } from 'lucide-react';
 
 const FeaturesSection = () => {
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isSecondVideoPlaying, setSecondVideoPlaying] = useState(false);
+  const videoRef = useRef<HTMLIFrameElement | null>(null);
+  const secondVideoRef = useRef<HTMLIFrameElement | null>(null);
+
   const fadeInUp = {
     hidden: { opacity: 0, y: 20 },
     visible: {
@@ -82,6 +88,95 @@ const FeaturesSection = () => {
             </motion.div>
           ))}
         </div>
+
+        {/* YouTube Video Section */}
+        <motion.div 
+          variants={fadeInUp} 
+          className="mt-20"
+        >
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#AFD3E2]/30 mb-6">
+              <span className="text-[#146C94] text-sm font-medium">See It In Action</span>
+            </div>
+            
+            <h2 className="text-3xl md:text-4xl font-bold text-[#146C94] mb-4">
+              Watch How TherapyAI Works
+            </h2>
+            
+            <p className="text-[#146C94]/70 text-lg max-w-2xl mx-auto">
+              See how our platform helps therapists stay present during sessions while capturing valuable insights.
+            </p>
+          </div>
+          
+          {/* Two-column video layout */}
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* First Video */}
+            <div className="rounded-2xl overflow-hidden">
+              <div className="relative aspect-video w-full cursor-pointer group" 
+                   onClick={() => {
+                     setIsVideoPlaying(true);
+                     if (videoRef.current) videoRef.current.focus();
+                   }}>
+                <Image
+                  src="/images/video/1.jpg"
+                  alt="TherapyAI Demo Video"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-2xl"
+                />
+                <div className="absolute inset-0 bg-[#146C94]/30 group-hover:bg-[#146C94]/20 transition-all duration-300 flex items-center justify-center rounded-2xl">
+                  <Play className="h-16 w-16 text-white p-4" />
+                </div>
+                {isVideoPlaying && (
+                  <iframe
+                    ref={videoRef}
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/PLc357sQ4pc?autoplay=1"
+                    title="TherapyAI Demo Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 rounded-2xl aspect-video"
+                  ></iframe>
+                )}
+              </div>
+            </div>
+            
+            {/* Second Video */}
+            <div className="rounded-2xl overflow-hidden">
+              <div className="relative aspect-video w-full cursor-pointer group"
+                   onClick={() => {
+                     setSecondVideoPlaying(true);
+                     if (secondVideoRef.current) secondVideoRef.current.focus();
+                   }}>
+                <Image
+                  src="/images/video/2.jpg"
+                  alt="TherapyAI Features Video"
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-2xl"
+                />
+                <div className="absolute inset-0 bg-[#146C94]/30 group-hover:bg-[#146C94]/20 transition-all duration-300 flex items-center justify-center rounded-2xl">
+                    <Play className="h-16 w-16 text-white p-4" />
+                </div>
+                {isSecondVideoPlaying && (
+                  <iframe
+                    ref={secondVideoRef}
+                    width="100%"
+                    height="100%"
+                    src="https://www.youtube.com/embed/T7a7xgs7FpA?autoplay=1"
+                    title="TherapyAI Features Video"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                    className="absolute inset-0 rounded-2xl aspect-video"
+                  ></iframe>
+                )}
+              </div>
+            </div>
+          </div>
+        </motion.div>
 
         {/* Bottom Section */}
         <motion.div variants={fadeInUp} className="mt-20 text-center py-10 px-6 rounded-2xl bg-[#AFD3E2]/20">

@@ -13,15 +13,15 @@ import PreferencesSettings from "./components/PreferencesSettings"
 export default function SettingsPage() {
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
+    <div className="p-6 max-w-6xl mx-auto">
       {/* Header */}
-      <div className="mb-6">
+      <div className="mb-8">
         <h1 className="text-3xl font-bold text-[#146C94]">Settings</h1>
         <p className="text-gray-600 mt-1">Manage your account preferences and settings</p>
       </div>
 
       {/* Settings Tabs */}
-      <Tabs defaultValue="general" className="space-y-6">
+      <Tabs defaultValue="general" className="space-y-6 mb-8">
         <TabsList className="w-full justify-start bg-transparent border-b">
           <TabsTrigger value="general" className="flex items-center gap-2">
             <User className="h-4 w-4" />

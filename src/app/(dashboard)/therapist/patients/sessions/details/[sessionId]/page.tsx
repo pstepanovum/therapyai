@@ -103,22 +103,29 @@ export default function TherapistSessionDetailPage() {
   }, [sessionId])
 
   if (loading) {
-    return <div className="p-6 max-w-4xl mx-auto">Loading session details...</div>
+    return <div className="p-6 max-w-6xl mx-auto">Loading session details...</div>
   }
 
   if (!sessionData) {
-    return <div className="p-6 max-w-4xl mx-auto">Session not found or you are not authorized to view it.</div>
+    return <div className="p-6 max-w-6xl mx-auto">Session not found or you are not authorized to view it.</div>
   }
 
   return (
-    <div className="p-6 max-w-4xl mx-auto">
-      <div className="mb-6">
-        <Button variant="ghost" className="mb-4" onClick={() => router.push(`/therapist/patients/sessions/${sessionData.patientId}`)}>
+    <div className="p-6 max-w-6xl mx-auto">
+      {/* Navigation Header with Button on Right */}
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
+          <p className="text-gray-600 mt-1">Complete summary and insights from the session with {patientName}</p>
+        </div>
+        <Button 
+          variant="ghost" 
+          onClick={() => router.push(`/therapist/patients/sessions/${sessionData.patientId}`)}
+          className="flex items-center"
+        >
           <ArrowLeft className="mr-2 h-4 w-4" />
           Back to Patient Sessions
         </Button>
-        <h1 className="text-3xl font-bold text-[#146C94]">Session Details</h1>
-        <p className="text-gray-600 mt-1">Complete summary and insights from the session with {patientName}</p>
       </div>
 
       <Card className="mb-6">
@@ -142,7 +149,7 @@ export default function TherapistSessionDetailPage() {
         </CardHeader>
       </Card>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
         <div className="md:col-span-2 space-y-6">
           <Card>
             <CardHeader>

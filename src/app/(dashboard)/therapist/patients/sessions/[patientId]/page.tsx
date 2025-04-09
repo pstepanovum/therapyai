@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
 import {
   Select,
   SelectContent,
@@ -15,6 +16,7 @@ import {
   Calendar,
   Clock,
   ChevronRight,
+  ArrowLeft,
 } from "lucide-react"
 import { getFirestore, collection, query, where, getDocs, doc, getDoc, updateDoc } from "firebase/firestore"
 import { auth } from "@/app/utils/firebase/config"
@@ -36,6 +38,7 @@ interface Patient {
 }
 
 export default function TherapistPatientSessionsPage() {
+  const router = useRouter()
   const { patientId } = useParams() as { patientId: string }
   const [patient, setPatient] = useState<Patient | null>(null)
   const [sessions, setSessions] = useState<Session[]>([])
@@ -117,17 +120,24 @@ export default function TherapistPatientSessionsPage() {
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
-      <div className="mb-6">
-        <Link href="/therapist/patients" className="inline-block mb-4 text-[#146C94] hover:underline">
-          ← Back to Patients
-        </Link>
-        <h1 className="text-3xl font-bold text-[#146C94]">
-          Sessions with {patient.first_name} {patient.last_name}
-        </h1>
-        <p className="text-gray-600 mt-1">View and manage session history</p>
+      <div className="mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-3xl font-bold text-[#146C94]">
+            Sessions with {patient.first_name} {patient.last_name}
+          </h1>
+          <p className="text-gray-600 mt-1">View and manage session history</p>
+        </div>
+        <Button 
+          variant="ghost" 
+          onClick={() => router.push("/therapist/patients")}
+          className="flex items-center"
+        >
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Back to Patients
+        </Button>
       </div>
 
-      <div className="space-y-6">
+      <div className="space-y-6 mb-8">
         <Card>
           <CardHeader>
             <CardTitle className="text-lg font-semibold">Upcoming Sessions</CardTitle>

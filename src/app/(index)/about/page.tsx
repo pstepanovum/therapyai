@@ -2,33 +2,32 @@
 
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import NavbarLanding from "@/components/navbar/navbar-landing";
 import FooterLanding from "@/components/footer/footer-landing";
 
 const AboutPage = () => {
-  // Team members data
+  // Team members data with added image paths
   const teamMembers = [
     {
-      name: "Dr. Sarah Johnson",
-      role: "Co-Founder & Clinical Director",
-      bio: "Clinical psychologist with 15+ years of experience and a passion for making therapy more accessible."
+      name: "Timothy Shaw",
+      role: "Clinical Director",
+      bio: "Clinical psychologist with 15+ years of experience and a passion for making therapy more accessible.",
+      image: "/images/avatars/team/1.jpeg"
     },
     {
-      name: "Michael Chen",
-      role: "Co-Founder & CEO",
-      bio: "Former healthcare technology executive with a mission to improve mental healthcare through innovation."
-    },
-    {
-      name: "Dr. James Wilson",
-      role: "Head of AI Research",
-      bio: "PhD in AI and psychology with expertise in natural language processing for therapeutic applications."
-    },
-    {
-      name: "Elena Rodriguez",
+      name: "Hunter Todd",
       role: "Director of Therapist Relations",
-      bio: "Licensed therapist who ensures our platform meets the needs of mental health professionals."
-    }
+      bio: "Former healthcare technology executive with a mission to improve mental healthcare through innovation.",
+      image: "/images/avatars/team/2.jpeg"
+    },
+    {
+      name: "Pavel Stepanov",
+      role: "Head of AI Research",
+      bio: "PhD in AI and psychology with expertise in natural language processing for therapeutic applications.",
+      image: "/images/avatars/team/3.jpeg"
+    },
   ];
 
   // Values data
@@ -125,7 +124,7 @@ const AboutPage = () => {
           </div>
         </section>
 
-        {/* Team Section */}
+        {/* Team Section - More compact three column layout */}
         <section className="py-20 px-4">
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-16">
@@ -137,12 +136,25 @@ const AboutPage = () => {
               </p>
             </div>
             
-            <div className="grid md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {teamMembers.map((member, index) => (
-                <div key={index} className="bg-[#F8FBFC] rounded-xl p-6">
-                  <h3 className="text-xl font-semibold text-[#146C94] mb-1">{member.name}</h3>
-                  <p className="text-[#146C94]/90 font-medium mb-3">{member.role}</p>
-                  <p className="text-[#146C94]/70">{member.bio}</p>
+                <div key={index} className="bg-[#F8FBFC] rounded-xl overflow-hidden shadow-sm">
+                  {/* Keeping original image proportions */}
+                  <div className="relative w-full h-64">
+                    <Image
+                      src={member.image}
+                      alt={member.name}
+                      fill
+                      style={{ objectFit: 'cover' }}
+                      className="rounded-t-xl"
+                    />
+                  </div>
+                  {/* More compact content area */}
+                  <div className="p-4">
+                    <h3 className="text-lg font-semibold text-[#146C94] mb-1">{member.name}</h3>
+                    <p className="text-sm text-[#146C94]/90 font-medium mb-2">{member.role}</p>
+                    <p className="text-xs text-[#146C94]/70">{member.bio}</p>
+                  </div>
                 </div>
               ))}
             </div>
