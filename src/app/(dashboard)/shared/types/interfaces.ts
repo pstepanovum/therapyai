@@ -32,6 +32,20 @@ export interface Session {
   patientName?: string;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // Interface for notification
 export interface Notification {
   id: string;
@@ -50,6 +64,20 @@ export interface Notification {
   patientId?: string;
   patientName?: string;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // Interface for patient note
 export interface PatientNote {
